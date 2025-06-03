@@ -4,6 +4,8 @@ import { join, resolve } from "pathe";
 import { type Plugin, rolldown } from "rolldown";
 import { minify } from "oxc-minify";
 import { gzipSync } from "node:zlib";
+import { isAbsolute } from "node:path";
+import { fileURLToPath } from "node:url";
 
 export function fmtPath(path: string): string {
   return resolve(path).replace(process.cwd(), ".");
@@ -111,4 +113,15 @@ export async function sideEffectSize(
   }
 
   return Buffer.byteLength(output[0].code.trim());
+}
+
+export function normalizePath(
+  path: string | URL | undefined,
+  resolveFrom?: string,
+): string {
+  return typeof path === "string" && isAbsolute(path)
+    ? path
+    : path instanceof URL
+      ? fileURLToPath(path)
+      : resolve(resolveFrom || ".", path || ".");
 }

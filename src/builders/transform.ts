@@ -164,7 +164,7 @@ export async function transformDir(
   consola.log(
     `\n${c.magenta("[transform] ")}${c.underline(fmtPath(entry.outDir!) + "/")}\n${writtenFiles
       .map((f) => c.dim(fmtPath(f)))
-      .join("\n\n")}`,
+      .join("\n")}`,
   );
 }
 
